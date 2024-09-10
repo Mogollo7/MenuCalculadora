@@ -1,64 +1,106 @@
-# Importar las clases necesarias de tkinter
-from tkinter import Tk, Label, Button, Entry
+from tkinter import *
+import math
 
 def crear_ventana():
-    # Configurar colores
-    bg_color = "#fdcae1"  # Color de fondo de la ventana y los labels
-    fg_color = "#333"     # Color del texto en los labels
-    font = ("Arial", 12)  # Fuente y tamaño del texto en los widgets
+    bg_color = "#fdcae1"
+    fg_color = "#333"
+    font = ("Arial", 12)
 
-    # Crear la ventana principal
     vent = Tk()
-    vent.title("Calculadora Simple")       # Título de la ventana
-    vent.geometry("1000x300")              # Dimensiones de la ventana
-    vent.configure(bg=bg_color)            # Configurar el color de fondo
+    vent.title("Calculadora Simple")
+    vent.geometry("1000x500")
+    vent.configure(bg=bg_color)
     
-    # Función para volver el resultado entero si el residuo es 0
     def formato_resultado(r):
         return int(r) if r % 1 == 0 else r
     
-    # Función para sumar los valores de las entradas
     def suma():
-        n1 = txt1.get()  # Obtener el texto del primer Entry
-        n2 = txt2.get()  # Obtener el texto del segundo Entry
+        n1 = txt1.get()
+        n2 = txt2.get()
         try:
-            r = float(n1) + float(n2)      # Convertir a float y sumar
+            r = float(n1) + float(n2)
             r = formato_resultado(r)
-            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
-            txt3.insert(0, r)              # Insertar el resultado
-        except ValueError:                 # Manejo de errores si la conversión falla
             txt3.delete(0, 'end')
-            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
 
-    # Función para restar los valores de las entradas
     def resta():
-        n1 = txt1.get()  # Obtener el texto del primer Entry
-        n2 = txt2.get()  # Obtener el texto del segundo Entry
+        n1 = txt1.get()
+        n2 = txt2.get()
         try:
-            r = float(n1) - float(n2)      # Convertir a float y restar
+            r = float(n1) - float(n2)
             r = formato_resultado(r)
-            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
-            txt3.insert(0, r)              # Insertar el resultado
-        except ValueError:                 # Manejo de errores si la conversión falla
             txt3.delete(0, 'end')
-            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
-            
-    def multiplicación():
-        n1 = txt1.get()  # Obtener el texto del primer Entry
-        n2 = txt2.get()  # Obtener el texto del segundo Entry
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
+
+    def multiplicacion():
+        n1 = txt1.get()
+        n2 = txt2.get()
         try:
-            r = float(n1) * float(n2)      # Convertir a float y multiplica
+            r = float(n1) * float(n2)
             r = formato_resultado(r)
-            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
-            txt3.insert(0, r)              # Insertar el resultado
-        except ValueError:                 # Manejo de errores si la conversión falla
             txt3.delete(0, 'end')
-            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
 
+    def division():
+        n1 = txt1.get()
+        n2 = txt2.get()
+        try:
+            r = float(n1) / float(n2)
+            r = formato_resultado(r)
+            txt3.delete(0, 'end')
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
+        except ZeroDivisionError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
 
-    
+    def valor_absoluto():
+        n1 = txt1.get()
+        
+        try:
+            r = abs(float(n1))
+            r = formato_resultado(r)
+            txt3.delete(0, 'end')
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
 
-    
+    def mcm():
+        def calcular_mcm(a, b):
+            return abs(a * b) // math.gcd(a, b)
+
+        n1 = txt1.get()
+        n2 = txt2.get()
+        try:
+            r = calcular_mcm(int(n1), int(n2))
+            txt3.delete(0, 'end')
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
+
+    def mcd():
+        n1 = txt1.get()
+        n2 = txt2.get()
+        try:
+            r = math.gcd(int(n1), int(n2))
+            txt3.delete(0, 'end')
+            txt3.insert(0, r)
+        except ValueError:
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")
 
     def salir():
         vent.destroy()
@@ -78,20 +120,29 @@ def crear_ventana():
     txt3 = Entry(vent, bg="#FFF")
     txt3.place(relx=0.6, rely=0.5, anchor="center", relwidth=0.3, relheight=0.1)
 
-    # Botones para operaciones
     btn_suma = Button(vent, text="Sumar", command=suma, bg="#7fff7f")
-    btn_suma.place(relx=0.2, rely=0.7, anchor="center", relwidth=0.3, relheight=0.1)
+    btn_suma.place(x=50, y=300, width=150, height=30)
     
     btn_resta = Button(vent, text="Restar", command=resta, bg="#ff7f7f")
-    btn_resta.place(relx=0.6, rely=0.7, anchor="center", relwidth=0.3, relheight=0.1)
+    btn_resta.place(x=220, y=300, width=150, height=30)
     
-    btn_multiplicación = Button(vent, text="multiplicación", command=multiplicación, bg="#ff7f7f")
-    btn_multiplicación.place(relx=0.2, rely=0.9, anchor="center", relwidth=0.3, relheight=0.1)
-    
+    btn_multiplicacion = Button(vent, text="Multiplicación", command=multiplicacion, bg="#ff7f7f")
+    btn_multiplicacion.place(x=50, y=350, width=150, height=30)
 
-    # Botón para salir
+    btn_division = Button(vent, text="División", command=division, bg="#ff7f7f")
+    btn_division.place(x=220, y=350, width=150, height=30)
+
+    btn_valor_absoluto = Button(vent, text="Valor Absoluto", command=valor_absoluto, bg="#7f7fff")
+    btn_valor_absoluto.place(x=560, y=300, width=150, height=30)
+    
+    btn_mcm = Button(vent, text="MCM", command=mcm, bg="#7f7fff")
+    btn_mcm.place(x=390, y=300, width=150, height=30)
+    
+    btn_mcd = Button(vent, text="MCD", command=mcd, bg="#7f7fff")
+    btn_mcd.place(x=560, y=350, width=150, height=30)
+
     btn_salir = Button(vent, text="Salir", command=salir, bg="#d3d3d3")
-    btn_salir.place(relx=0.6, rely=0.9, anchor="center", relwidth=0.3, relheight=0.1)
+    btn_salir.place(x=390, y=350, width=150, height=30)
 
     return vent
 
