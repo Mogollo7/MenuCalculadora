@@ -1,135 +1,161 @@
 from tkinter import *
 from tkinter import ttk
+import math
 
-# Función para procesar la entrada del botón
-def agregar_caracter(caracter):
-    actual = entrada2.get()
-    entrada2.set(actual + str(caracter))
+def temaOscuro():
+    estilos.configure('mainframe.TFrame', background="#010924")
+    estilos_label1.configure('label1.TLabel', background="#010924", foreground="white")
+    estilos_label2.configure('label2.TLabel', background="#010924", foreground="white")
+    
+    estilos_numero.configure('Botones_numero.TButton', background="#00044A", foreground="white")
+    estilos_numero.map('Botones_numero.TButton', background=[('active', '#020A90')] )
+    
+    estilos_otros.configure('Botones_OTROS.TButton', background="#010924", foreground="white")
+    estilos_otros.map('Botones_OTROS.TButton', background=[('active', '#000AB1')] )
 
-# Función para evaluar la expresión y mostrar el resultado
-def evaluar():
-    try:
-        # Reemplaza símbolos y evalúa respetando la prioridad de operaciones
-        expresion = entrada2.get()
-        # Remplazar x por * y ÷ por /
-        expresion = expresion.replace('x', '*').replace('÷', '/')
-        resultado = eval(expresion)
-        entrada1.set(entrada2.get())  # Muestra la expresión en el label pequeño
-        entrada2.set(str(resultado))  # Muestra el resultado en el label grande
-    except Exception as e:
-        entrada2.set("Error")
+    estilos_borrar.configure('Botones_BORRAR.TButton', background="#010924", foreground="white")
+    estilos_borrar.map('Botones_BORRAR.TButton', background=[('active', '#000AB1')] )
 
-# Función para borrar el último carácter y restaurar la operación anterior en Label2
-def borrar():
-    if entrada2.get() == "":  # Si no hay nada en Label2, se restaura lo que había en Label1
-        entrada2.set(entrada1.get())
-    else:
-        entrada2.set(entrada2.get()[:-1])
+def temaClaro():
+    estilos.configure('mainframe.TFrame', background="#DBDBDB")
+    estilos_label1.configure('label1.TLabel', background="#DBDBDB", foreground="black")
+    estilos_label2.configure('label2.TLabel', background="#DBDBDB", foreground="black")
+    
+    estilos_numero.configure('Botones_numero.TButton', background="#FFFFFF", foreground="black")
+    estilos_numero.map('Botones_numero.TButton', background=[("active", "#B9B9B9")])
+    
+    estilos_otros.configure('Botones_OTROS.TButton', background="#CECECE", foreground="black")
+    estilos_otros.map('Botones_OTROS.TButton', background=[("active", "#B9B9B9")])
+    
+    estilos_borrar.configure('Botones_BORRAR.TButton', background="#CECECE", foreground="black")
+    estilos_borrar.map('Botones_BORRAR.TButton', foreground=[("active", "#FF0000")], background=[("active", "#858585")])
 
-# Función para borrar toda la entrada
-def borrar_todo():
-    entrada1.set("")  # Borra la operación anterior
-    entrada2.set("")  # Borra el resultado actual
 
-# Funciones para agregar caracteres específicos
-def agregar_parentesis_izquierdo():
-    agregar_caracter('(')
+def crear_menu(vent):
+    barra_menu = Menu(vent)
+    vent.config(menu=barra_menu)
+    
+    menu_inicio = Menu(barra_menu, tearoff=0)
+    barra_menu.add_cascade(label="Inicio", menu=menu_inicio)
+    menu_inicio.add_command(label="Salir", command=vent.destroy)
 
-def agregar_parentesis_derecho():
-    agregar_caracter(')')
-
-def agregar_suma():
-    agregar_caracter('+')
-
-def agregar_resta():
-    agregar_caracter('-')
-
-def agregar_multiplicacion():
-    agregar_caracter('x')
-
-def agregar_division():
-    agregar_caracter('÷')
-
-def agregar_punto():
-    agregar_caracter('.')
+    menu_tema = Menu(barra_menu, tearoff=0)
+    barra_menu.add_cascade(label="Tema", menu=menu_tema)
+    menu_tema.add_command(label="Tema Claro", command=temaClaro)
+    menu_tema.add_command(label="Tema Oscuro", command=temaOscuro)
 
 ventana = Tk()
 ventana.title("Calculadora")
 ventana.geometry("+500+80")
+ventana.columnconfigure(0, weight=1)
+ventana.rowconfigure(0, weight=1)
 
 # Estilos
 estilos = ttk.Style()
-estilos.configure('frame.TFrame', background="#DBDBDB")
+estilos.theme_use('clam')
+estilos.configure('mainframe.TFrame', background="#DBDBDB")
 
-frame = ttk.Frame(ventana, style="frame.TFrame")
-frame.grid(column=0, row=0)
+mainframe = ttk.Frame(ventana, style="mainframe.TFrame")
+mainframe.grid(row=0, column=0, sticky=(W, N, E, S))
+mainframe.columnconfigure(0, weight=1)
+mainframe.columnconfigure(1, weight=1)
+mainframe.columnconfigure(2, weight=1)
+mainframe.columnconfigure(3, weight=1)
+mainframe.rowconfigure(0, weight=1)
+mainframe.rowconfigure(1, weight=1)
+mainframe.rowconfigure(2, weight=1)
+mainframe.rowconfigure(3, weight=1)
+mainframe.rowconfigure(4, weight=1)
+mainframe.rowconfigure(5, weight=1)
+mainframe.rowconfigure(6, weight=1)
+mainframe.rowconfigure(7, weight=1)
 
+# Estilos label
 estilos_label1 = ttk.Style()
-estilos_label1.configure('Label1.TLabel', font="arial 15", anchor="e")
+estilos_label1.configure('label1.TLabel', font="arial 15", anchor="e")
 
 estilos_label2 = ttk.Style()
-estilos_label2.configure('Label2.TLabel', font="arial 40", anchor="e")
+estilos_label2.configure('label2.TLabel', font="arial 40", anchor="e")
 
-# Variable para los labels
-entrada1 = StringVar()  # Label pequeño (expresión anterior)
-label_entrada1 = ttk.Label(frame, textvariable=entrada1, style="Label1.TLabel")
-label_entrada1.grid(column=0, row=0, columnspan=4, sticky=(W, E))
+# Entrada
+entry1 = StringVar()
+label_entry1 = ttk.Label(mainframe, textvariable=entry1, style="label1.TLabel")
+label_entry1.grid(row=0, column=0, columnspan=4, sticky=(W, N, E, S))
 
-entrada2 = StringVar()  # Label grande (resultado actual)
-label_entrada2 = ttk.Label(frame, textvariable=entrada2, style="Label2.TLabel")
-label_entrada2.grid(column=0, row=1, columnspan=4, sticky=(W, E))
+entry2 = StringVar()
+label_entry2 = ttk.Label(mainframe, textvariable=entry2, style="label2.TLabel")
+label_entry2.grid(row=1, column=0, columnspan=4, sticky=(W, N, E, S))
 
-# Estilos de los botones
-estilos_botones_numeros = ttk.Style()
-estilos_botones_numeros.configure('Botones_numeros.TButton', font="arial 22", width=5, background="#FFFFFF", relief="flat")
+# Estilos botones
+estilos_numero = ttk.Style()
+estilos_numero.configure('Botones_numero.TButton', font="arial22", width=5, background="#FFFFFF", relief="flat")
 
-estilo_boton_borrar = ttk.Style()
-estilo_boton_borrar.configure('Botones_borrar.TButton', font="arial 22", width=5, background="#CECECE", relief="flat")
 
-otros_botones = ttk.Style()
-otros_botones.configure('Botones_otros.TButton', font="arial 22", width=5, background="#CECECE", relief="flat")
+estilos_borrar = ttk.Style()
+estilos_borrar.configure('Botones_BORRAR.TButton', font="arial22", width=5, background="#CECECE", relief="flat")
 
-# Creación de botones
-botones_numeros = [ttk.Button(frame, text=str(i), style="Botones_numeros.TButton", command=lambda i=i: agregar_caracter(i)) for i in range(10)]
+estilos_otros = ttk.Style()
+estilos_otros.configure('Botones_OTROS.TButton', font="arial22", width=5, background="#CECECE", relief="flat")
 
-botton_borrar = ttk.Button(frame, text=chr(9003), style="Botones_borrar.TButton", command=borrar)
-botton_borrar_todo = ttk.Button(frame, text="C", style="Botones_borrar.TButton", command=borrar_todo)
-botton_parentesis1 = ttk.Button(frame, text="(", style="Botones_otros.TButton", command=agregar_parentesis_izquierdo)
-botton_parentesis2 = ttk.Button(frame, text=")", style="Botones_otros.TButton", command=agregar_parentesis_derecho)
+# Crear botones
+button0 = ttk.Button(mainframe, text="0", style="Botones_numero.TButton")
+button1 = ttk.Button(mainframe, text="1", style="Botones_numero.TButton")
+button2 = ttk.Button(mainframe, text="2", style="Botones_numero.TButton")
+button3 = ttk.Button(mainframe, text="3", style="Botones_numero.TButton")
+button4 = ttk.Button(mainframe, text="4", style="Botones_numero.TButton")
+button5 = ttk.Button(mainframe, text="5", style="Botones_numero.TButton")
+button6 = ttk.Button(mainframe, text="6", style="Botones_numero.TButton")
+button7 = ttk.Button(mainframe, text="7", style="Botones_numero.TButton")
+button8 = ttk.Button(mainframe, text="8", style="Botones_numero.TButton")
+button9 = ttk.Button(mainframe, text="9", style="Botones_numero.TButton")
 
-botton_suma = ttk.Button(frame, text="+", style="Botones_otros.TButton", command=agregar_suma)
-botton_resta = ttk.Button(frame, text="-", style="Botones_otros.TButton", command=agregar_resta)
-botton_multiplicacion = ttk.Button(frame, text="x", style="Botones_otros.TButton", command=agregar_multiplicacion)
-botton_division = ttk.Button(frame, text=chr(247), style="Botones_otros.TButton", command=agregar_division)
+button_borrar = ttk.Button(mainframe, text=chr(9003), style="Botones_BORRAR.TButton")  # Botón para borrar un carácter
+button_borrar_todo = ttk.Button(mainframe, text="C", style="Botones_BORRAR.TButton")  # Botón para borrar todo
 
-botton_igual = ttk.Button(frame, text="=", style="Botones_otros.TButton", command=evaluar)
-botton_punto = ttk.Button(frame, text=".", style="Botones_otros.TButton", command=agregar_punto)
+button_parentesis1 = ttk.Button(mainframe, text="(", style="Botones_OTROS.TButton")  # Paréntesis de apertura
+button_parentesis2 = ttk.Button(mainframe, text=")", style="Botones_OTROS.TButton")  # Paréntesis de cierre
+button_punto = ttk.Button(mainframe, text=".", style="Botones_OTROS.TButton")  # Punto decimal
 
-# Posicionamiento de botones
-botton_parentesis1.grid(column=0, row=2)
-botton_parentesis2.grid(column=1, row=2)
-botton_borrar_todo.grid(column=2, row=2)
-botton_borrar.grid(column=3, row=2)
+button_division = ttk.Button(mainframe, text=chr(247), style="Botones_OTROS.TButton")  # Botón para división
+button_multiplicacion = ttk.Button(mainframe, text="x", style="Botones_OTROS.TButton")  # Botón para multiplicación
+button_suma = ttk.Button(mainframe, text="+", style="Botones_OTROS.TButton")  # Botón para suma
+button_resta = ttk.Button(mainframe, text="-", style="Botones_OTROS.TButton")  # Botón para resta
 
-botones_numeros[7].grid(column=0, row=3)
-botones_numeros[8].grid(column=1, row=3)
-botones_numeros[9].grid(column=2, row=3)
-botton_division.grid(column=3, row=3)
+button_radicacion = ttk.Button(mainframe, text="√", style="Botones_OTROS.TButton")  # Botón para radicación
+button_igual = ttk.Button(mainframe, text="=", style="Botones_OTROS.TButton")  # Botón para igual
 
-botones_numeros[4].grid(column=0, row=4)
-botones_numeros[5].grid(column=1, row=4)
-botones_numeros[6].grid(column=2, row=4)
-botton_multiplicacion.grid(column=3, row=4)
+# Colocar botones en pantalla
+button_parentesis1.grid(column=0, row=2, sticky=(W, N, E, S))
+button_parentesis2.grid(column=1, row=2, sticky=(W, N, E, S))
+button_borrar_todo.grid(column=2, row=2, sticky=(W, N, E, S))
+button_borrar.grid(column=3, row=2, sticky=(W, N, E, S))
 
-botones_numeros[1].grid(column=0, row=5)
-botones_numeros[2].grid(column=1, row=5)
-botones_numeros[3].grid(column=2, row=5)
-botton_resta.grid(column=3, row=5)
+button7.grid(column=0, row=3, sticky=(W, N, E, S))
+button8.grid(column=1, row=3, sticky=(W, N, E, S))
+button9.grid(column=2, row=3, sticky=(W, N, E, S))
+button_division.grid(column=3, row=3, sticky=(W, N, E, S))
 
-botones_numeros[0].grid(column=0, row=6, columnspan=2, sticky=(W, E))
-botton_punto.grid(column=2, row=6)
-botton_suma.grid(column=3, row=6)
+button4.grid(column=0, row=4, sticky=(W, N, E, S))
+button5.grid(column=1, row=4, sticky=(W, N, E, S))
+button6.grid(column=2, row=4, sticky=(W, N, E, S))
+button_multiplicacion.grid(column=3, row=4, sticky=(W, N, E, S))
 
-botton_igual.grid(column=0, row=7, columnspan=4, sticky=(W, E))
+button1.grid(column=0, row=5, sticky=(W, N, E, S))
+button2.grid(column=1, row=5, sticky=(W, N, E, S))
+button3.grid(column=2, row=5, sticky=(W, N, E, S))
+button_suma.grid(column=3, row=5, sticky=(W, N, E, S))
+
+button0.grid(column=0, row=6, columnspan=2, sticky=(W, N, E, S))
+button_punto.grid(column=2, row=6, sticky=(W, N, E, S))
+button_resta.grid(column=3, row=6, sticky=(W, N, E, S))  # Posición del botón de resta
+
+button_igual.grid(column=0, row=7, columnspan=3, sticky=(W, N, E, S))  # Posición del botón igual
+button_radicacion.grid(column=3, row=7, sticky=(W, N, E, S))  # Posición del botón de radicación
+
+for child in mainframe.winfo_children():
+    child.grid_configure(ipady=10, padx=1, pady=1)
+
+# Crear el menú en cascada
+crear_menu(ventana)
 
 ventana.mainloop()
