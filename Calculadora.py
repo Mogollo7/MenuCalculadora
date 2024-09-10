@@ -1,92 +1,99 @@
-def Menú_Nombre():
-    print("\nHola usuario, por favor ingrese su nombre")
-    nombre_usuario = input("Nombre: ")
-    return nombre_usuario
+# Importar las clases necesarias de tkinter
+from tkinter import Tk, Label, Button, Entry
 
-def mostrar_menu(nombre_usuario):
-    print(f"Hola {nombre_usuario}")
-    print("\nOpciones del Menú")
-    print("1. Suma")
-    print("2. Resta")
-    print("3. División")
-    print("4. Calcular precio con Impuesto")
-    print("5. Conversor de Temperatura (Celsius a Fahrenheit)")
-    print("6. Terminar")
+def crear_ventana():
+    # Configurar colores
+    bg_color = "#fdcae1"  # Color de fondo de la ventana y los labels
+    fg_color = "#333"     # Color del texto en los labels
+    font = ("Arial", 12)  # Fuente y tamaño del texto en los widgets
 
-def agregar_valores(valores):
-    return sum(valores)
-
-def restar_valores(valores):
-    resultado_final = valores[0]
-    for valor in valores[1:]:
-        resultado_final -= valor
-    return resultado_final
-
-def dividir_valores(valores):
-    resultado_final = valores[0]
-    for valor in valores[1:]:
-        if valor == 0:
-            return "Error: División por cero no permitida."
-        resultado_final /= valor
-    return resultado_final
-
-def calcular_precio_impuesto(costo, tasa_impuesto=0.19):
-    costo_total = costo + (costo * tasa_impuesto)
-    return costo_total
-
-def mostrar_resultado(resultado):
-    return int(resultado) if resultado % 1 == 0 else resultado
-
-def conversor_temperatura():
-    grados_celsius = float(input("Ingresa la temperatura en grados Celsius: "))
-    grados_fahrenheit = (grados_celsius * 9/5) + 32
-    grados_fahrenheit = mostrar_resultado(grados_fahrenheit)  # Aplicar formateo del resultado
-    print(f"{grados_celsius}°C son {grados_fahrenheit}°F\n")
-
-def iniciar_calculadora():
-    nombre_usuario = Menú_Nombre()  # Se obtiene el nombre del usuario al inicio
-    while True:
-        mostrar_menu(nombre_usuario)
+    # Crear la ventana principal
+    vent = Tk()
+    vent.title("Calculadora Simple")       # Título de la ventana
+    vent.geometry("1000x300")              # Dimensiones de la ventana
+    vent.configure(bg=bg_color)            # Configurar el color de fondo
+    
+    # Función para volver el resultado entero si el residuo es 0
+    def formato_resultado(r):
+        return int(r) if r % 1 == 0 else r
+    
+    # Función para sumar los valores de las entradas
+    def suma():
+        n1 = txt1.get()  # Obtener el texto del primer Entry
+        n2 = txt2.get()  # Obtener el texto del segundo Entry
         try:
-            eleccion = int(input("Selecciona una opción del menú: "))
-            if eleccion == 6:
-                print(f"Terminando la calculadora, gracias {nombre_usuario}")
-                break
-            if 1 <= eleccion <= 3:
-                cantidad_valores = int(input("¿Cuántos valores deseas usar? "))
-                if cantidad_valores <= 0:
-                    print("Error: La cantidad de valores debe ser positiva.")
-                    continue
-                lista_valores = []
-                for i in range(cantidad_valores):
-                    try:
-                        valor = float(input(f"Ingrese el valor {i+1}: "))
-                        lista_valores.append(valor)  # Se agregan los valores a la lista
-                    except ValueError:
-                        print("Error: Debe ingresar un valor numérico válido.")
-                        break
-                else:
-                    if eleccion == 1:
-                        resultado_final = agregar_valores(lista_valores)
-                    elif eleccion == 2:
-                        resultado_final = restar_valores(lista_valores)
-                    elif eleccion == 3:
-                        resultado_final = dividir_valores(lista_valores)
+            r = float(n1) + float(n2)      # Convertir a float y sumar
+            r = formato_resultado(r)
+            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
+            txt3.insert(0, r)              # Insertar el resultado
+        except ValueError:                 # Manejo de errores si la conversión falla
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
 
-                    print(f"Resultado: {mostrar_resultado(resultado_final)}")
-            elif eleccion == 4:
-                try:
-                    precio_inicial = float(input("Introduce el precio: "))
-                    precio_con_impuesto = calcular_precio_impuesto(precio_inicial)
-                    print(f"El precio final con impuesto es: {mostrar_resultado(precio_con_impuesto)}")
-                except ValueError:
-                    print("Error: Debe ingresar un valor numérico válido para el precio.")
-            elif eleccion == 5:
-                conversor_temperatura()
-            else:
-                print("Opción no válida. Intente de nuevo.")
-        except ValueError:
-            print("Error: Debe ingresar un número entero.")
+    # Función para restar los valores de las entradas
+    def resta():
+        n1 = txt1.get()  # Obtener el texto del primer Entry
+        n2 = txt2.get()  # Obtener el texto del segundo Entry
+        try:
+            r = float(n1) - float(n2)      # Convertir a float y restar
+            r = formato_resultado(r)
+            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
+            txt3.insert(0, r)              # Insertar el resultado
+        except ValueError:                 # Manejo de errores si la conversión falla
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
+            
+    def multiplicación():
+        n1 = txt1.get()  # Obtener el texto del primer Entry
+        n2 = txt2.get()  # Obtener el texto del segundo Entry
+        try:
+            r = float(n1) * float(n2)      # Convertir a float y multiplica
+            r = formato_resultado(r)
+            txt3.delete(0, 'end')          # Limpiar el Entry de resultado
+            txt3.insert(0, r)              # Insertar el resultado
+        except ValueError:                 # Manejo de errores si la conversión falla
+            txt3.delete(0, 'end')
+            txt3.insert(0, "Error")        # Mostrar "Error" en caso de fallo
 
-iniciar_calculadora()
 
+    
+
+    
+
+    def salir():
+        vent.destroy()
+
+    lbl1 = Label(vent, text="Número 1:", bg=bg_color, fg=fg_color, font=font)
+    lbl1.place(relx=0.2, rely=0.1, anchor='center', relwidth=0.3, relheight=0.1)
+    txt1 = Entry(vent, bg="#fff")
+    txt1.place(relx=0.6, rely=0.1, anchor="center", relwidth=0.3, relheight=0.1)
+    
+    lbl2 = Label(vent, text="Número 2:", bg=bg_color, fg=fg_color, font=font)
+    lbl2.place(relx=0.2, rely=0.3, anchor='center', relwidth=0.3, relheight=0.1)
+    txt2 = Entry(vent, bg="#fff")
+    txt2.place(relx=0.6, rely=0.3, anchor="center", relwidth=0.3, relheight=0.1)
+
+    lbl3 = Label(vent, text="Resultado:", bg=bg_color, fg=fg_color, font=font)
+    lbl3.place(relx=0.2, rely=0.5, anchor='center', relwidth=0.3, relheight=0.1)
+    txt3 = Entry(vent, bg="#FFF")
+    txt3.place(relx=0.6, rely=0.5, anchor="center", relwidth=0.3, relheight=0.1)
+
+    # Botones para operaciones
+    btn_suma = Button(vent, text="Sumar", command=suma, bg="#7fff7f")
+    btn_suma.place(relx=0.2, rely=0.7, anchor="center", relwidth=0.3, relheight=0.1)
+    
+    btn_resta = Button(vent, text="Restar", command=resta, bg="#ff7f7f")
+    btn_resta.place(relx=0.6, rely=0.7, anchor="center", relwidth=0.3, relheight=0.1)
+    
+    btn_multiplicación = Button(vent, text="multiplicación", command=multiplicación, bg="#ff7f7f")
+    btn_multiplicación.place(relx=0.2, rely=0.9, anchor="center", relwidth=0.3, relheight=0.1)
+    
+
+    # Botón para salir
+    btn_salir = Button(vent, text="Salir", command=salir, bg="#d3d3d3")
+    btn_salir.place(relx=0.6, rely=0.9, anchor="center", relwidth=0.3, relheight=0.1)
+
+    return vent
+
+vent = crear_ventana()
+vent.mainloop()
