@@ -1,150 +1,97 @@
 from tkinter import *
+from tkinter import ttk
 import math
 
-def crear_ventana():
-    bg_color = "#fdcae1"
-    fg_color = "#333"
-    font = ("Arial", 12)
+ventana = Tk()
+ventana.title("Calculadora")
+ventana.geometry("+500+80")
 
-    vent = Tk()
-    vent.title("Calculadora Simple")
-    vent.geometry("1000x500")
-    vent.configure(bg=bg_color)
-    
-    def formato_resultado(r):
-        return int(r) if r % 1 == 0 else r
-    
-    def suma():
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = float(n1) + float(n2)
-            r = formato_resultado(r)
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+estilos = ttk.Style()
+estilos.configure('frame.TFrame', background = "#DBDBDBDB")
 
-    def resta():
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = float(n1) - float(n2)
-            r = formato_resultado(r)
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+frame = ttk.Frame(ventana, style="frame.TFrame")
+frame.grid(column=0, row=0)
 
-    def multiplicacion():
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = float(n1) * float(n2)
-            r = formato_resultado(r)
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+estilos_label1 = ttk.Style()
+estilos_label1.configure('Label1.TLabel', font="arial 15", anchor="e")
 
-    def division():
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = float(n1) / float(n2)
-            r = formato_resultado(r)
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
-        except ZeroDivisionError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+estilos_label2 = ttk.Style()
+estilos_label2.configure('Label1.TLabel', font="arial 40", anchor="e")
 
-    def valor_absoluto():
-        n1 = txt1.get()
-        
-        try:
-            r = abs(float(n1))
-            r = formato_resultado(r)
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+entrada1 = StringVar()
+label_entrada1 = ttk.Label(frame, textvariable=entrada1, style="Label1.TLabel")
+label_entrada1.grid(column=0, row=0, columnspan=4, sticky=(W, E))
 
-    def mcm():
-        def calcular_mcm(a, b):
-            return abs(a * b) // math.gcd(a, b)
+entrada2 = StringVar()
+label_entrada2 = ttk.Label(frame, textvariable=entrada2, style="Label2.TLabel")
+label_entrada2.grid(column=0, row=1, columnspan=4, sticky=(W, E))
 
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = calcular_mcm(int(n1), int(n2))
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+estilos_bottones_numeros=ttk.Style()
+estilos_bottones_numeros.configure('Botones_numeros.TButton', font="arial 22", width=5, background="#FFFFFF", relief="flat")
 
-    def mcd():
-        n1 = txt1.get()
-        n2 = txt2.get()
-        try:
-            r = math.gcd(int(n1), int(n2))
-            txt3.delete(0, 'end')
-            txt3.insert(0, r)
-        except ValueError:
-            txt3.delete(0, 'end')
-            txt3.insert(0, "Error")
+estilo_boton_borrar=ttk.Style()
+estilo_boton_borrar.configure('Botones_borrar.TButton', font="arial 22", width=5, background="#CECECE", relief="flat")
 
-    def salir():
-        vent.destroy()
+otros_botones=ttk.Style()
+otros_botones.configure('Botones_otros.TButton', font="arial 22", width=5, background="#CECECE", relief="flat")
 
-    lbl1 = Label(vent, text="Número 1:", bg=bg_color, fg=fg_color, font=font)
-    lbl1.place(relx=0.2, rely=0.1, anchor='center', relwidth=0.3, relheight=0.1)
-    txt1 = Entry(vent, bg="#fff")
-    txt1.place(relx=0.6, rely=0.1, anchor="center", relwidth=0.3, relheight=0.1)
-    
-    lbl2 = Label(vent, text="Número 2:", bg=bg_color, fg=fg_color, font=font)
-    lbl2.place(relx=0.2, rely=0.3, anchor='center', relwidth=0.3, relheight=0.1)
-    txt2 = Entry(vent, bg="#fff")
-    txt2.place(relx=0.6, rely=0.3, anchor="center", relwidth=0.3, relheight=0.1)
+botton0 = ttk.Button(frame, text="0", style="Botones_numeros.TButton")
+botton1 = ttk.Button(frame, text="1", style="Botones_numeros.TButton")
+botton2 = ttk.Button(frame, text="2", style="Botones_numeros.TButton")
+botton3 = ttk.Button(frame, text="3", style="Botones_numeros.TButton")
+botton4 = ttk.Button(frame, text="4", style="Botones_numeros.TButton")
+botton5 = ttk.Button(frame, text="5", style="Botones_numeros.TButton")
+botton6 = ttk.Button(frame, text="6", style="Botones_numeros.TButton")
+botton7 = ttk.Button(frame, text="7", style="Botones_numeros.TButton")
+botton8 = ttk.Button(frame, text="8", style="Botones_numeros.TButton")
+botton9 = ttk.Button(frame, text="9", style="Botones_numeros.TButton")
 
-    lbl3 = Label(vent, text="Resultado:", bg=bg_color, fg=fg_color, font=font)
-    lbl3.place(relx=0.2, rely=0.5, anchor='center', relwidth=0.3, relheight=0.1)
-    txt3 = Entry(vent, bg="#FFF")
-    txt3.place(relx=0.6, rely=0.5, anchor="center", relwidth=0.3, relheight=0.1)
+botton_borrar = ttk.Button(frame, text=chr(9003), style="Botones_borrar.TButton")
+botton_borrar_todo = ttk.Button(frame, text="C", style="Botones_borrar.TButton")
+botton_parentesis1 = ttk.Button(frame, text="(", style="Botones_otros.TButton")
+botton_parentesis2 = ttk.Button(frame, text=")", style="Botones_otros.TButton")
 
-    btn_suma = Button(vent, text="Sumar", command=suma, bg="#7fff7f")
-    btn_suma.place(x=50, y=300, width=150, height=30)
-    
-    btn_resta = Button(vent, text="Restar", command=resta, bg="#ff7f7f")
-    btn_resta.place(x=220, y=300, width=150, height=30)
-    
-    btn_multiplicacion = Button(vent, text="Multiplicación", command=multiplicacion, bg="#ff7f7f")
-    btn_multiplicacion.place(x=50, y=350, width=150, height=30)
+botton_suma = ttk.Button(frame, text="+", style="Botones_otros.TButton")
+botton_resta = ttk.Button(frame, text="-", style="Botones_otros.TButton")
+botton_multiplicacion = ttk.Button(frame, text="x", style="Botones_otros.TButton")
+botton_division = ttk.Button(frame, text=chr(247), style="Botones_otros.TButton")
 
-    btn_division = Button(vent, text="División", command=division, bg="#ff7f7f")
-    btn_division.place(x=220, y=350, width=150, height=30)
+botton_igual = ttk.Button(frame, text="=", style="Botones_otros.TButton")         
+botton_raiz_cuadrada = ttk.Button(frame, text="√", style="Botones_otros.TButton")
 
-    btn_valor_absoluto = Button(vent, text="Valor Absoluto", command=valor_absoluto, bg="#7f7fff")
-    btn_valor_absoluto.place(x=560, y=300, width=150, height=30)
-    
-    btn_mcm = Button(vent, text="MCM", command=mcm, bg="#7f7fff")
-    btn_mcm.place(x=390, y=300, width=150, height=30)
-    
-    btn_mcd = Button(vent, text="MCD", command=mcd, bg="#7f7fff")
-    btn_mcd.place(x=560, y=350, width=150, height=30)
+botton_punto = ttk.Button(frame, text=".", style="Botones_otros.TButton")
 
-    btn_salir = Button(vent, text="Salir", command=salir, bg="#d3d3d3")
-    btn_salir.place(x=390, y=350, width=150, height=30)
+botton_parentesis1.grid(column=0, row=2)
+botton_parentesis2.grid(column=1, row=2)
+botton_borrar_todo.grid(column=2, row=2)
+botton_borrar.grid(column=3, row=2)
 
-    return vent
+botton7.grid(column=0, row=3)
+botton8.grid(column=1, row=3)
+botton9.grid(column=2, row=3)
+botton_division.grid(column=3, row=3)
 
-vent = crear_ventana()
-vent.mainloop()
+botton4.grid(column=0, row=4)
+botton5.grid(column=1, row=4)
+botton6.grid(column=2, row=4)
+botton_multiplicacion.grid(column=3, row=4)
+
+botton1.grid(column=0, row=5)
+botton2.grid(column=1, row=5)
+botton3.grid(column=2, row=5)
+botton_resta.grid(column=3, row=5)
+
+botton0.grid(column=0, row=6, columnspan=2, sticky=(W, E))
+botton_punto.grid(column=2, row=6)
+botton_suma.grid(column=3, row=6)
+
+botton_raiz_cuadrada.grid(column=3, row=7)
+
+botton_igual.grid(column=0, row=7, columnspan=3, sticky=(W, E))
+
+
+
+ventana.mainloop()
+
+
+
