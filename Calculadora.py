@@ -30,7 +30,6 @@ def temaClaro():
     estilos_borrar.configure('Botones_BORRAR.TButton', background="#CECECE", foreground="black")
     estilos_borrar.map('Botones_BORRAR.TButton', foreground=[("active", "#FF0000")], background=[("active", "#858585")])
 
-
 def crear_menu(vent):
     barra_menu = Menu(vent)
     vent.config(menu=barra_menu)
@@ -44,6 +43,68 @@ def crear_menu(vent):
     menu_tema.add_command(label="Tema Claro", command=temaClaro)
     menu_tema.add_command(label="Tema Oscuro", command=temaOscuro)
 
+def ingresar_valores(tecla):
+    if tecla  >= '0' and tecla <= '9' or tecla =='(' or tecla == ')' or tecla == '.':
+        entry2.set(entry2.get()+tecla)
+    
+  
+    if tecla == '*' or tecla == '/' or tecla == '+' or tecla == '-':
+        if tecla == '*':
+            entry1.set(entry2.get() )
+        elif tecla == '/':
+            entry1.set(entry2.get() + '/')
+        elif tecla == '+':
+            entry1.set(entry2.get() + '+')
+        elif tecla == '-':
+            entry1.set(entry2.get() + '-')
+            
+        entry2.set('')
+
+    
+    if tecla == '=':
+      entry1.set(entry1.get() + entry2.get())
+      resultado = eval(entry1.get())  
+      entry2.set(resultado)      
+  
+def ingresar_valores_teclado(event):
+    tecla = event.char
+    
+    if tecla >= '0' and tecla <= '9' or tecla == '(' or tecla == ')' or tecla == '.':
+        entry2.set(entry2.get() + tecla)
+    
+    elif tecla == '*' or tecla == '/' or tecla == '+' or tecla == '-':
+        if tecla == '*':
+            entry1.set(entry2.get() + '*')
+        elif tecla == '/':
+            entry1.set(entry2.get() + '/')
+        elif tecla == '+':
+            entry1.set(entry2.get() + '+')
+        elif tecla == '-':
+            entry1.set(entry2.get() + '-')
+        entry2.set('')
+    
+    elif tecla == '=':
+        entry1.set(entry1.get() + entry2.get())
+        resultado = eval(entry1.get())
+        entry2.set(resultado)
+     
+def raizCuadrada():
+  entry1.set('')
+  resultado =  math.sqrt(float(entry2.get()))
+  entry2.set(resultado)
+  
+def borrar(*args):
+  inicio = 0
+  final = len(entry2.get())
+  
+  entry2.set(entry2.get()[inicio:final-1])
+
+def borrar_todo(*args):
+  entry1.set('')
+  entry2.set('')
+
+    
+        
 ventana = Tk()
 ventana.title("Calculadora")
 ventana.geometry("+500+80")
@@ -98,31 +159,32 @@ estilos_otros = ttk.Style()
 estilos_otros.configure('Botones_OTROS.TButton', font="arial22", width=5, background="#CECECE", relief="flat")
 
 # Crear botones
-button0 = ttk.Button(mainframe, text="0", style="Botones_numero.TButton")
-button1 = ttk.Button(mainframe, text="1", style="Botones_numero.TButton")
-button2 = ttk.Button(mainframe, text="2", style="Botones_numero.TButton")
-button3 = ttk.Button(mainframe, text="3", style="Botones_numero.TButton")
-button4 = ttk.Button(mainframe, text="4", style="Botones_numero.TButton")
-button5 = ttk.Button(mainframe, text="5", style="Botones_numero.TButton")
-button6 = ttk.Button(mainframe, text="6", style="Botones_numero.TButton")
-button7 = ttk.Button(mainframe, text="7", style="Botones_numero.TButton")
-button8 = ttk.Button(mainframe, text="8", style="Botones_numero.TButton")
-button9 = ttk.Button(mainframe, text="9", style="Botones_numero.TButton")
 
-button_borrar = ttk.Button(mainframe, text=chr(9003), style="Botones_BORRAR.TButton")  # Botón para borrar un carácter
-button_borrar_todo = ttk.Button(mainframe, text="C", style="Botones_BORRAR.TButton")  # Botón para borrar todo
+button0 = ttk.Button(mainframe, text="0", style="Botones_numero.TButton", command=lambda: ingresar_valores('0'))
+button1 = ttk.Button(mainframe, text="1", style="Botones_numero.TButton", command=lambda: ingresar_valores('1'))
+button2 = ttk.Button(mainframe, text="2", style="Botones_numero.TButton", command=lambda: ingresar_valores('2'))
+button3 = ttk.Button(mainframe, text="3", style="Botones_numero.TButton", command=lambda: ingresar_valores('3'))
+button4 = ttk.Button(mainframe, text="4", style="Botones_numero.TButton", command=lambda: ingresar_valores('4'))
+button5 = ttk.Button(mainframe, text="5", style="Botones_numero.TButton", command=lambda: ingresar_valores('5'))
+button6 = ttk.Button(mainframe, text="6", style="Botones_numero.TButton", command=lambda: ingresar_valores('6'))
+button7 = ttk.Button(mainframe, text="7", style="Botones_numero.TButton", command=lambda: ingresar_valores('7'))
+button8 = ttk.Button(mainframe, text="8", style="Botones_numero.TButton", command=lambda: ingresar_valores('8'))
+button9 = ttk.Button(mainframe, text="9", style="Botones_numero.TButton", command=lambda: ingresar_valores('9'))
 
-button_parentesis1 = ttk.Button(mainframe, text="(", style="Botones_OTROS.TButton")  # Paréntesis de apertura
-button_parentesis2 = ttk.Button(mainframe, text=")", style="Botones_OTROS.TButton")  # Paréntesis de cierre
-button_punto = ttk.Button(mainframe, text=".", style="Botones_OTROS.TButton")  # Punto decimal
+button_borrar = ttk.Button(mainframe, text=chr(9003), style="Botones_BORRAR.TButton", command=lambda: borrar())  # Botón para borrar un carácter
+button_borrar_todo = ttk.Button(mainframe, text="C", style="Botones_BORRAR.TButton", command=lambda: borrar_todo())  # Botón para borrar todo
 
-button_division = ttk.Button(mainframe, text=chr(247), style="Botones_OTROS.TButton")  # Botón para división
-button_multiplicacion = ttk.Button(mainframe, text="x", style="Botones_OTROS.TButton")  # Botón para multiplicación
-button_suma = ttk.Button(mainframe, text="+", style="Botones_OTROS.TButton")  # Botón para suma
-button_resta = ttk.Button(mainframe, text="-", style="Botones_OTROS.TButton")  # Botón para resta
+button_parentesis1 = ttk.Button(mainframe, text="(", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('('))  # Paréntesis de apertura
+button_parentesis2 = ttk.Button(mainframe, text=")", style="Botones_OTROS.TButton", command=lambda: ingresar_valores(')'))  # Paréntesis de cierre
+button_punto = ttk.Button(mainframe, text=".", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('.'))  # Punto decimal
 
-button_radicacion = ttk.Button(mainframe, text="√", style="Botones_OTROS.TButton")  # Botón para radicación
-button_igual = ttk.Button(mainframe, text="=", style="Botones_OTROS.TButton")  # Botón para igual
+button_division = ttk.Button(mainframe, text=chr(247), style="Botones_OTROS.TButton", command=lambda: ingresar_valores('/'))  # Botón para división
+button_multiplicacion = ttk.Button(mainframe, text="x", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('*'))  # Botón para multiplicación
+button_suma = ttk.Button(mainframe, text="+", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('+'))  # Botón para suma
+button_resta = ttk.Button(mainframe, text="-", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('-'))  # Botón para resta
+
+button_radicacion = ttk.Button(mainframe, text="√", style="Botones_OTROS.TButton", command=lambda: raizCuadrada())  # Botón para radicación
+button_igual = ttk.Button(mainframe, text="=", style="Botones_OTROS.TButton", command=lambda: ingresar_valores('='))  # Botón para igual
 
 # Colocar botones en pantalla
 button_parentesis1.grid(column=0, row=2, sticky=(W, N, E, S))
@@ -157,5 +219,7 @@ for child in mainframe.winfo_children():
 
 # Crear el menú en cascada
 crear_menu(ventana)
-
+ventana.bind('<Key>', ingresar_valores_teclado)
+ventana.bind('<KeyPress-b>', borrar)
+ventana.bind('<KeyPress-q>', borrar_todo)
 ventana.mainloop()
