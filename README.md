@@ -1,2 +1,4 @@
 # MenuCalculadora
-Calculadora con soporte para operaciones aritméticas básicas como suma, resta y división etc.
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Tkinter](https://img.shields.io/badge/Tkinter-GUI-orange)
+
