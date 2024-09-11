@@ -1,6 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 import math
+import subprocess
+
+def ejecutar_otro_programa():
+    programa = "Calculadora_simple.py"  
+    try:
+        subprocess.run(["python", programa], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error al ejecutar el programa: {e}")
 
 def temaOscuro():
     estilos.configure('mainframe.TFrame', background="#010924")
@@ -34,14 +42,21 @@ def crear_menu(vent):
     barra_menu = Menu(vent)
     vent.config(menu=barra_menu)
     
+    # Menú de Inicio
     menu_inicio = Menu(barra_menu, tearoff=0)
     barra_menu.add_cascade(label="Inicio", menu=menu_inicio)
     menu_inicio.add_command(label="Salir", command=vent.destroy)
 
+    # Menú de Tema
     menu_tema = Menu(barra_menu, tearoff=0)
     barra_menu.add_cascade(label="Tema", menu=menu_tema)
     menu_tema.add_command(label="Tema Claro", command=temaClaro)
     menu_tema.add_command(label="Tema Oscuro", command=temaOscuro)
+    
+    # Menú de Calculadora
+    menu_calculadora2 = Menu(barra_menu, tearoff=0)
+    barra_menu.add_cascade(label="Calculadora", menu=menu_calculadora2)
+    menu_calculadora2.add_command(label="Calculadora Simple", command=ejecutar_otro_programa)
 
 def ingresar_valores(tecla):
     if tecla  >= '0' and tecla <= '9' or tecla =='(' or tecla == ')' or tecla == '.':
@@ -223,3 +238,4 @@ ventana.bind('<Key>', ingresar_valores_teclado)
 ventana.bind('<KeyPress-b>', borrar)
 ventana.bind('<KeyPress-q>', borrar_todo)
 ventana.mainloop()
+ejecutar_otro_programa()
